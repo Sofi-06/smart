@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Clone, ContactShadows, Environment, OrbitControls, useGLTF } from '@react-three/drei'
+import Logo from './assets/Logo.jpg.png'
 import './App.css'
 
 function SmartwatchModel(props) {
@@ -144,20 +145,28 @@ export default function App() {
   }, [])
 
   const clamp = (value) => Math.min(1, Math.max(0, value))
-  const heroOpacity = clamp(1 - progress * 3.4)
-  // Section 2 reaches full presence first, holds its own moment, then hands off to section 3.
-  const sensorReveal = clamp((progress - 0.16) / 0.2)
-  const watchSettle = clamp(progress / 0.42)
-  const sectionTwoFade = 1 - clamp((progress - 0.5) / 0.12)
-  const sectionThreeReveal = clamp((progress - 0.54) / 0.1)
-  const sectionThreeSignal = clamp((progress - 0.57) / 0.08)
-  const sectionThreeTransform = clamp((progress - 0.62) / 0.08)
-  const sectionThreeFeatures = clamp((progress - 0.67) / 0.07)
-  const sectionThreeClose = 1 - clamp((progress - 0.84) / 0.06)
-  const sectionFourReveal = clamp((progress - 0.87) / 0.05)
-  const sectionFourModel = clamp((progress - 0.89) / 0.05)
-  const sectionFourExit = 1 - clamp((progress - 0.965) / 0.03)
-  const sectionFiveReveal = clamp((progress - 0.975) / 0.025)
+  const heroOpacity = clamp(1 - progress * 4.8)
+  const sensorReveal = clamp((progress - 0.11) / 0.14)
+  const watchSettle = clamp(progress / 0.28)
+  const sectionTwoFade = 1 - clamp((progress - 0.32) / 0.08)
+  const sectionThreeReveal = clamp((progress - 0.36) / 0.07)
+  const sectionThreeSignal = clamp((progress - 0.38) / 0.06)
+  const sectionThreeTransform = clamp((progress - 0.41) / 0.06)
+  const sectionThreeFeatures = clamp((progress - 0.44) / 0.05)
+  const sectionThreeClose = 1 - clamp((progress - 0.55) / 0.04)
+  const sectionFourReveal = clamp((progress - 0.57) / 0.04)
+  const sectionFourModel = clamp((progress - 0.59) / 0.04)
+  const sectionFourExit = 1 - clamp((progress - 0.65) / 0.03)
+  const sectionFiveReveal = clamp((progress - 0.66) / 0.03)
+  const sectionFiveExit = 1 - clamp((progress - 0.74) / 0.03)
+  const sectionSixReveal = clamp((progress - 0.75) / 0.03)
+  const sectionSixCompare = clamp((progress - 0.77) / 0.04)
+  const sectionSixExit = 1 - clamp((progress - 0.85) / 0.03)
+  const sectionSevenReveal = clamp((progress - 0.86) / 0.03)
+  const sectionSevenHeart = clamp((progress - 0.88) / 0.03)
+  const sectionSevenSteps = clamp((progress - 0.90) / 0.04)
+  const sectionSevenExit = 1 - clamp((progress - 0.94) / 0.03)
+  const sectionEightReveal = clamp((progress - 0.96) / 0.03)
   const metricDescriptions = {
     'Ritmo card\u00edaco': 'latidos por minuto',
     'Intervalos RR': 'tiempo entre latidos consecutivos',
@@ -402,13 +411,13 @@ export default function App() {
         <section
           className={`approach-story${activeApproach ? ' is-expanded' : ''}`}
           style={{
-            '--approach-reveal': sectionFiveReveal,
-            '--approach-shift': `${(1 - sectionFiveReveal) * 3}rem`,
+            '--approach-opacity': sectionFiveReveal * sectionFiveExit,
+            '--approach-shift': `${(1 - sectionFiveReveal) * 3 - (1 - sectionFiveExit) * 3}rem`,
             '--approach-scale': 0.92 + sectionFiveReveal * 0.08,
-            '--approach-blur': `${(1 - sectionFiveReveal) * 12}px`,
-            pointerEvents: sectionFiveReveal > 0.85 ? 'auto' : 'none',
+            '--approach-blur': `${(1 - sectionFiveReveal) * 12 + (1 - sectionFiveExit) * 12}px`,
+            pointerEvents: sectionFiveReveal > 0.85 && sectionFiveExit > 0.15 ? 'auto' : 'none',
           }}
-          aria-hidden={sectionFiveReveal < 0.1}
+          aria-hidden={sectionFiveReveal < 0.1 || sectionFiveExit < 0.1}
         >
           <div className="approach-copy">
             <p className="approach-eyebrow">Enfoque OpenWear</p>
@@ -444,6 +453,158 @@ export default function App() {
               <p className="approach-empty">Selecciona un paso para abrir su recorrido y ver qu&eacute; aporta al resultado.</p>
             )}
           </aside>
+        </section>
+
+        <section
+          className="validation-story"
+          style={{
+            '--val-opacity': sectionSixReveal * sectionSixExit,
+            '--val-shift': `${(1 - sectionSixReveal) * 3 - (1 - sectionSixExit) * 3}rem`,
+            '--val-blur': `${(1 - sectionSixReveal) * 10 + (1 - sectionSixExit) * 10}px`,
+            '--val-compare': sectionSixCompare,
+            pointerEvents: sectionSixReveal > 0.85 && sectionSixExit > 0.15 ? 'auto' : 'none',
+          }}
+          aria-hidden={sectionSixReveal < 0.1 || sectionSixExit < 0.1}
+        >
+          <div className="val-copy">
+            <p className="val-eyebrow">Validaci&oacute;n del sue&ntilde;o</p>
+            <h2>Comparar contra una referencia.</h2>
+            <p>Los relojes estiman el sue&ntilde;o, pero el m&eacute;todo considerado referencia es la <strong>Polisomnograf&iacute;a (PSG)</strong>, un estudio cl&iacute;nico con sensores especializados.</p>
+          </div>
+          
+          <div className="val-comparison">
+            <div className="val-track psg-track">
+              <h3>PSG (Realidad)</h3>
+              <ul>
+                <li>Despierto</li>
+                <li className="link-arrow">&darr;</li>
+                <li>N2</li>
+                <li className="link-arrow">&darr;</li>
+                <li>N3</li>
+                <li className="link-arrow">&darr;</li>
+                <li>REM</li>
+              </ul>
+            </div>
+            
+            <div className="val-vs">
+              <div className="val-agreement-circle">
+                <svg viewBox="0 0 100 100" className="progress-ring">
+                  <circle className="progress-ring-bg" cx="50" cy="50" r="45" />
+                  <circle className="progress-ring-fill" cx="50" cy="50" r="45" />
+                </svg>
+                <div className="val-agreement-text">
+                  <strong>82%</strong>
+                  <small>Agreement</small>
+                </div>
+              </div>
+            </div>
+
+            <div className="val-track wearable-track">
+              <h3>Wearable (Estimaci&oacute;n)</h3>
+              <ul>
+                <li>Despierto</li>
+                <li className="link-arrow">&darr;</li>
+                <li>Sue&ntilde;o ligero</li>
+                <li className="link-arrow">&darr;</li>
+                <li>Sue&ntilde;o profundo</li>
+                <li className="link-arrow">&darr;</li>
+                <li>REM</li>
+              </ul>
+            </div>
+          </div>
+          <p className="val-disclaimer">Este n&uacute;mero no se inventa. Sale del an&aacute;lisis real de datos.</p>
+        </section>
+
+        <section
+          className="heart-story"
+          style={{
+            '--heart-opacity': sectionSevenReveal * sectionSevenExit,
+            '--heart-shift': `${(1 - sectionSevenReveal) * 3 - (1 - sectionSevenExit) * 3}rem`,
+            '--heart-steps': sectionSevenSteps,
+            pointerEvents: sectionSevenReveal > 0.85 && sectionSevenExit > 0.15 ? 'auto' : 'none',
+          }}
+          aria-hidden={sectionSevenReveal < 0.1 || sectionSevenExit < 0.1}
+        >
+          <div className="heart-content">
+            <div className="heart-visuals">
+              <div className="heart-header">
+                <p className="heart-eyebrow">Coraz&oacute;n</p>
+                <h2>El pulso bajo la lupa.</h2>
+              </div>
+              
+              <div className="heart-3d-wrapper">
+                <div className="heart-3d">
+                  <svg viewBox="0 0 32 29.6" className="heart-icon">
+                    <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                    c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+                  </svg>
+                  <div className="heart-glow"></div>
+                </div>
+                <div className="heart-ecg-line">
+                  <svg viewBox="0 0 340 100" preserveAspectRatio="none">
+                    <polyline className="ecg-shadow continuous" points="0,50 30,50 40,20 50,80 60,50 150,50 160,20 170,80 180,50 270,50 280,20 290,80 300,50 340,50" />
+                    <polyline className="ecg-path continuous" points="0,50 30,50 40,20 50,80 60,50 150,50 160,20 170,80 180,50 270,50 280,20 290,80 300,50 340,50" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <div className="heart-copy">
+              <div className="heart-pipeline">
+                  <div className="pipeline-step step-1"><span>ECG</span> Detectar picos R</div>
+                  <div className="pipeline-arrow arrow-1">&darr;</div>
+                  <div className="pipeline-step step-2"><span>RR</span> Calcular intervalos RR</div>
+                  <div className="pipeline-arrow arrow-2">&darr;</div>
+                  <div className="pipeline-step step-3"><span>Ritmo</span> Analizar ritmo</div>
+                  <div className="pipeline-arrow arrow-3">&darr;</div>
+                  
+                  <div className="rhythm-cards step-4">
+                    <div className="rhythm-card regular">
+                      <h3>Regular rhythm</h3>
+                      <p>RR SD 24 ms</p>
+                    </div>
+                    <div className="rhythm-card irregular">
+                      <h3>Irregular rhythm</h3>
+                      <p>RR SD 121 ms</p>
+                    </div>
+                  </div>
+              </div>
+              
+              <p className="medical-disclaimer">
+              <span className="alert-icon">!</span>
+              No diagnosticamos enfermedades. Analizamos patrones asociados con irregularidad.
+            </p>
+          </div>
+          </div>
+        </section>
+
+        <section
+          className="finale-story"
+          style={{
+            '--finale-opacity': sectionEightReveal,
+            '--finale-shift': `${(1 - sectionEightReveal) * 3}rem`,
+            pointerEvents: sectionEightReveal > 0.85 ? 'auto' : 'none',
+          }}
+          aria-hidden={sectionEightReveal < 0.1}
+        >
+          <div className="finale-logo">
+             <img src={Logo} alt="OpenWear Logo" />
+          </div>
+          <div className="finale-stack">
+            <div className="stack-item">WEARABLE</div>
+            <div className="stack-line"></div>
+            <div className="stack-item">SENSOR</div>
+            <div className="stack-line"></div>
+            <div className="stack-item">SIGNAL</div>
+            <div className="stack-line"></div>
+            <div className="stack-item">ALGORITHM</div>
+            <div className="stack-line"></div>
+            <div className="stack-item">RESULT</div>
+            <div className="stack-line"></div>
+            <div className="stack-item">EVIDENCE</div>
+            <div className="stack-line"></div>
+            <div className="stack-item highlight">HOW RELIABLE?</div>
+          </div>
         </section>
       </div>
     </main>
